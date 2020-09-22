@@ -1,58 +1,117 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <Form autocomplete="off">
+    <div>
+      <div class="row">
+        <div class="icon">
+          <i class="fa fa-plane"></i>
+        </div>
+        <div class="column">
+          <SearchAirport></SearchAirport>
+        </div>
+        <div class="column">
+          <SearchAirport></SearchAirport>
+        </div>
+      </div>
+      <div class="icon2">
+        <i class="fa fa-ellipsis-v"></i>
+      </div>
+      <div class="row">
+        <div class="icon">
+          <i class="fa fa-calendar-o"></i>
+        </div>
+        <div class="column2">
+          <JourneyDatePicker></JourneyDatePicker>
+          <JourneyDatePicker></JourneyDatePicker>
+        </div>
+        <div class="column">
+          <div class="row">
+            <div class="column2"> <div class="icon">
+              <i class="fa fa-users icon"></i>
+            </div>
+              <FlightType></FlightType></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Form>
 </template>
 
 <script>
+import SearchAirport from './SearchAirport'
+import FlightType from "./FlightType";
+import JourneyDatePicker from "./JourneyDatePicker";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  name: 'FormComponent',
+  components: {
+    SearchAirport,
+    FlightType,
+    JourneyDatePicker
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: .5; /* Firefox */
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
 }
-a {
-  color: #42b983;
+
+.column2{
+  width: 100%;
+  float: left;
+  display: inline-flex;
 }
+
+.row {
+  width: 100%;
+  display: inline-flex;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.icon {
+  padding: 2%;
+  color: white;
+  text-align: left;
+}
+
+.icon2 {
+  color: white;
+  text-align: left;
+  padding-left: 2.5%;
+}
+
+.textLabel {
+  color: white;
+}
+
+.textField {
+  border: none !important;
+  border-bottom: 2px solid white !important;
+  background-color: dodgerblue;
+  width: 90%;
+  color: white;
+}
+
+.textField::-webkit-calendar-picker-indicator {
+  opacity:0;
+  -webkit-appearance: none;
+}
+
 </style>
