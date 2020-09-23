@@ -18,25 +18,19 @@
       <datalist
           tabindex="-1"
           id="autocomplete-results"
-          v-show="isOpen"
+          v-if="isOpen"
           class="autocomplete-results"
       >
         <option
-            class="loading"
-            v-if="isLoading"
-        >
-          Loading results...
-        </option>
-        <option
+            style="white-space: pre-wrap"
             tabindex="0"
-            v-else
             v-for="(result, i) in results"
             :key="i"
             @click="setResult(result)"
             class="autocomplete-result"
             :class="{ 'is-active': i === arrowCounter }"
         >
-          {{ result.name }}
+          {{concatOutput(result.iata, result.country.name, result.name)}}
         </option>
       </datalist>
     </div>
@@ -47,19 +41,6 @@
 import http from '../http-common'
 export default {
 name: "SearchAirport",
-  props: {
-    items: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-    isAsync: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-
   data() {
     return {
       isOpen: false,
@@ -70,11 +51,11 @@ name: "SearchAirport",
     };
   },
 
+
   methods: {
     onChange(e) {
       // Let's warn the parent that a change was made
       this.$emit('input', this);
-      console.log(e.target.value)
       // Let's  our flat array
       this.filterResults(e.target.value);
       this.isOpen = true;
@@ -88,28 +69,37 @@ name: "SearchAirport",
         this.results = res.data.airports ? res.data.airports.filter((item) => {
           return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
         }) : null;
+        console.log(this.results)
       });
+    },
+
+    concatOutput(abr, country, name) {
+      return abr + '   ' + country + "<br>" + name
     },
 
     setResult(result) {
       this.search = result;
       this.isOpen = false;
     },
+
     onArrowDown() {
       if (this.arrowCounter < this.results.length) {
         this.arrowCounter = this.arrowCounter + 1;
       }
     },
+
     onArrowUp() {
       if (this.arrowCounter > 0) {
         this.arrowCounter = this.arrowCounter -1;
       }
     },
+
     onEnter() {
       this.search = this.results[this.arrowCounter];
       this.isOpen = false;
       this.arrowCounter = -1;
     },
+
     handleClickOutside(evt) {
       if (!this.$el.contains(evt.target)) {
         this.isOpen = false;
@@ -117,18 +107,11 @@ name: "SearchAirport",
       }
     }
   },
-  watch: {
-    items: function (val, oldValue) {
-      // actually compare them
-      if (val.length !== oldValue.length) {
-        this.results = val;
-        this.isLoading = false;
-      }
-    },
-  },
+
   mounted() {
     document.addEventListener('click', this.handleClickOutside)
   },
+
   destroyed() {
     document.removeEventListener('click', this.handleClickOutside)
   }
@@ -148,7 +131,7 @@ name: "SearchAirport",
   padding: 0;
   margin: 0;
   border: 1px solid #eeeeee;
-  height: 120px;
+  height: auto;
   overflow: auto;
   width: 100%;
 }
