@@ -3,6 +3,7 @@
     <label class="textLabel" for="flyfrom">Flying From:</label><br>
     <div class="autocomplete">
       <input
+          list="autocomplete-results"
           type="text"
           class="textField"
           id="flyfrom"
@@ -14,19 +15,19 @@
           @keydown.up="onArrowUp"
           @keydown.enter="onEnter"
       />
-      <ul
+      <datalist
           tabindex="-1"
           id="autocomplete-results"
           v-show="isOpen"
           class="autocomplete-results"
       >
-        <li
+        <option
             class="loading"
             v-if="isLoading"
         >
           Loading results...
-        </li>
-        <li
+        </option>
+        <option
             tabindex="0"
             v-else
             v-for="(result, i) in results"
@@ -36,8 +37,8 @@
             :class="{ 'is-active': i === arrowCounter }"
         >
           {{ result.name }}
-        </li>
-      </ul>
+        </option>
+      </datalist>
     </div>
   </div>
 </template>
@@ -70,30 +71,26 @@ name: "SearchAirport",
   },
 
   methods: {
-    onChange() {
+    onChange(e) {
       // Let's warn the parent that a change was made
       this.$emit('input', this);
-
-      // Is the data given by an outside ajax request?
-      if (this.isAsync) {
-        this.isLoading = true;
-      } else {
-        // Let's  our flat array
-        this.filterResults();
-        this.isOpen = true;
-      }
+      console.log(e.target.value)
+      // Let's  our flat array
+      this.filterResults(e.target.value);
+      this.isOpen = true;
     },
 
-    filterResults() {
+    filterResults(searchInput) {
       // first uncapitalize all the things
       // let vue = this
-      http.get('?term=uni')
+      http.get('?term=' + searchInput)
       .then((res) => {
         this.results = res.data.airports ? res.data.airports.filter((item) => {
           return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
         }) : null;
       });
     },
+
     setResult(result) {
       this.search = result;
       this.isOpen = false;
