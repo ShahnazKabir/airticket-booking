@@ -1,13 +1,35 @@
 <template>
   <div class="typeDiv">
     <label class="textLabel" for="flyfrom">Flying From:</label><br>
-    <input class="textField" type="text" id="flyfrom" name="flyfrom"><br>
+    <input class="textField" type="text" onfocus="showPopup" id="flyfrom" name="flyfrom"><br>
+
   </div>
 </template>
 
 <script>
 export default {
-name: "FlightType"
+name: "FlightType",
+data() {
+  return {
+    adultNo : null,
+    childNo : null,
+    totalPerson: null,
+    flightClass : null,
+    formShow : false,
+  }
+},
+methods: {
+  handleClickOutside() {
+     if(this.formShow) {
+       this.formShow = false
+     }
+  },
+  showPopup() {
+    if(!this.formShow) {
+      this.formShow = true
+    }
+  }
+}
 }
 </script>
 

@@ -1,6 +1,7 @@
 <template>
   <div class="flightInput">
-    <label class="textLabel" for="flyfrom">Flying From:</label><br>
+    <label class="textLabel" for="flyfrom" v-if="airportStatus">Flying To:</label>
+    <label class="textLabel" for="flyfrom" v-else>Flying From:</label><br>
     <div class="autocomplete">
       <input
           list="autocomplete-results"
@@ -40,7 +41,12 @@
 <script>
 import http from '../http-common'
 export default {
-name: "SearchAirport",
+  props : {
+    airportStatus : {
+      type : Boolean
+    }
+  },
+  name: "SearchAirport",
   data() {
     return {
       isOpen: false,
@@ -80,6 +86,11 @@ name: "SearchAirport",
     setResult(result) {
       this.search = result;
       this.isOpen = false;
+      if (this.props.airportStatus) {
+        localStorage.setItem('flightForm', this.search)
+      } else {
+        localStorage.setItem('flightTo', this.search)
+      }
     },
 
     onArrowDown() {

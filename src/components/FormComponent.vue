@@ -1,15 +1,15 @@
 <template>
-  <Form autocomplete="off">
+  <Form autocomplete="off" onSubmit="searchFlight">
     <div>
       <div class="row">
         <div class="icon">
           <i class="fa fa-plane"></i>
         </div>
         <div class="column">
-          <SearchAirport></SearchAirport>
+          <SearchAirport v-bind:airportStatus="airportStatus"></SearchAirport>
         </div>
         <div class="column">
-          <SearchAirport></SearchAirport>
+          <SearchAirport v-bind:airportStatus="!airportStatus"></SearchAirport>
         </div>
       </div>
       <div class="icon2">
@@ -20,8 +20,8 @@
           <i class="fa fa-calendar-o"></i>
         </div>
         <div class="column2">
-          <JourneyDatePicker></JourneyDatePicker>
-          <JourneyDatePicker></JourneyDatePicker>
+          <JourneyDatePicker v-bind:dateStatus="dateStatus"></JourneyDatePicker>
+          <JourneyDatePicker v-bind:dateStatus="!dateStatus"></JourneyDatePicker>
         </div>
         <div class="column">
           <div class="row">
@@ -32,6 +32,7 @@
           </div>
         </div>
       </div>
+      <input type="submit" value="Submit" class="submitButton">
     </div>
   </Form>
 </template>
@@ -43,15 +44,37 @@ import JourneyDatePicker from "./JourneyDatePicker";
 
 export default {
   name: 'FormComponent',
+  data() {
+    return {
+      airportStatus: false,
+      dateStatus: false,
+    };
+  },
   components: {
     SearchAirport,
     FlightType,
     JourneyDatePicker
+  },
+  methods: {
+    searchFlight(e) {
+      e.preventDefault()
+      console.log('Flight Form',localStorage.getItem('flightForm'))
+      console.log('Flight To',localStorage.getItem('flightTo'))
+      console.log('Depart',localStorage.getItem('depart'))
+      console.log('Return',localStorage.getItem('return'))
+    }
   }
 }
 </script>
 
 <style>
+.submitButton {
+  height: 30px;
+  width: 100px;
+  border: none;
+  color: dodgerblue;
+  margin-bottom: 1%;
+}
 
 input:focus, textarea:focus, select:focus{
   outline: none;

@@ -1,13 +1,33 @@
 <template>
   <div class="dateDiv">
-    <label class="textLabel" for="flyfrom">Flying From:</label><br>
-    <input class="textField" type="date" id="flyfrom" name="flyfrom"><br>
+    <label class="textLabel" for="flyfrom" v-if="dateStatus">Return:</label>
+    <label class="textLabel" for="flyfrom" v-else>Depart:</label><br>
+    <input class="textField" v-model="journeyDate" @input="onChange" type="date" id="flyfrom" name="flyfrom"><br>
   </div>
 </template>
 
 <script>
 export default {
-name: "JourneyDatePicker"
+  props: {
+    dateStatus: {
+      type: Boolean,
+    },
+  },
+name: "JourneyDatePicker",
+data() {
+  return {
+    journeyDate : null
+  };
+},
+methods : {
+  onChange(e) {
+    if (this.props.dateStatus) {
+      localStorage.setItem('depart', e.target.value)
+    } else {
+      localStorage.setItem('return', e.target.value)
+    }
+  }
+}
 }
 </script>
 
